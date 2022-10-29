@@ -14,15 +14,15 @@ class Hero {
 const mango = new Hero({ name: 'Mango', xp: 1000 }) //екземпляр класу
 
 
-class Warrior extends Hero{ //новий клас, спадкує вл-сті. класу Hero
-    constructor(config) {
-        super(config)
-        this.weapon = config.weapon
+class Warrior extends Hero{ //новий клас Warrior спадкує вл-сті. класу Hero
+    constructor({ weapon, ...restProps }) { //обов'язково має бути ко-тор
+        super(restProps) // обов'язково має бути/дає доступ до к-тора батьківського класу/в супер передаємо об'єкт, який зібрали рестом глибше, до к-тора Hero
+        this.weapon = weapon
     }
-    attack() { //метод класу
+    attack() { //метод класу Warrior
         console.log(`${this.name} attack use ${this.weapon} `)
     }
-    changeWeapon(newWeapon) {
+    changeWeapon(newWeapon) { //метод класу Warrior/доступний для екземпляру ajax/не доступний для mango
         console.log(`${this.name} change weapon to ${newWeapon}`)
         this.weapon = newWeapon
     }
@@ -32,24 +32,53 @@ const ajax = new Warrior({ name: 'Ajax', xp: 1500, weapon: 'gun' }) //екзем
 
 
 class Mage extends Hero {
-    constructor(name, xp, spells = []) {
-        super(name, xp)
-
+    constructor({ spells, ...restProps } = {}) {
+        super(restProps) //в супер передаємо об'єкт, який зібрали рестом глибше, до к-тора Hero
+        
         this.spells = spells
     }
 }
 const poly = new Mage({ name: 'Poly', xp: 500, spells: ['fireball']})
 
-console.log(poly.spells)
+
+class Berserk extends Warrior{
+    constructor({warcry, ...restProps }) {
+        super(restProps)
+
+        this.warcry = warcry
+    }
+    babyRage() {
+        console.log(this.warcry)
+    }
+}
+const kiwi = new Berserk({name: 'Kiwi', xp: 600, weapon: 'axe', warcry: 'waaaaa'})
 
 
 
-// console.log(ajax)
-// ajax.attack()
-// ajax.gainXp(100)
-// ajax.changeWeapon('arbalet')
-// ajax.attack()
-// ajax.gainXp(200)
-// console.log(ajax)
+
+
+console.log(ajax)
+ajax.attack()
+ajax.gainXp(100)
+ajax.changeWeapon('arbalet')
+ajax.attack()
+ajax.gainXp(200)
+console.log(ajax)
+console.log(mango)
+mango.gainXp(200)
+console.log(mango)
+
+console.log(poly)
+poly.gainXp(100)
+console.log(poly)
+
+console.log(kiwi)
+kiwi.babyRage()
+kiwi.changeWeapon('knife')
+kiwi.attack()
+kiwi.gainXp(1234)
+console.log(kiwi)
+
+
 
 
